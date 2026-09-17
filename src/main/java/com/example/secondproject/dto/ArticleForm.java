@@ -7,6 +7,7 @@ import lombok.ToString;
 @AllArgsConstructor     // title과 content를 매개변수로 하는 생성자를 자동생성
 @ToString
 public class ArticleForm {
+    private Long id;
     private String title;   // 제목을 받을 필드
     private String content; // 내용을 받을 필드
 
@@ -32,6 +33,6 @@ public class ArticleForm {
 
 
     public Article toEntity() {
-        return new Article(null, title, content);
+        return new Article(id, title, content);
     }
 }
