@@ -1,9 +1,6 @@
 package com.example.secondproject.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,13 +12,23 @@ import lombok.ToString;
 @ToString
 @Getter
 public class Article {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // DB가 id 자동 생성
     private Long id;
+
     @Column
     private String title;
+
     @Column
     private String content;
+
+    public void patch(Article article) {
+        if (article.title != null)
+            this.title = article.title;
+        if (article.content != null)
+            this.content = article.content;
+    }
 
     /*         Getter 리팩터링
     public Long getId() {   // 주의! 데이터타입을 String -> Long 변경해야 함
