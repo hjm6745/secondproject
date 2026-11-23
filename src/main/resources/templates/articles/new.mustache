@@ -1,16 +1,59 @@
 {{>layouts/header}}
-
-<form class="container" action="/articles/create" method="post">
+<!-- action, method 삭제 -->
+<form class="container">
     <div class="mb-3">
         <label class="form-label">제목</label>
-        <input type="text" class="form-control" name="title">
+        <!-- name 대신 id 사용 -> JS에서 값을 꺼내기 위함 -->
+        <input type="text" class="form-control" id="new-article-title">
     </div>
     <div class="mb-3">
         <label class="form-label">내용</label>
-        <textarea class="form-control" rows="3" name="content"></textarea>
+        <textarea class="form-control" rows="3" id="new-article-content"></textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <!-- type="submit" -> button으로 변경 -> 폼 제출은 fetch로 처리 -->
+    <button type="button" class="btn btn-primary" id="article-create-btn">Submit</button>
     <a href="/articles">Back</a>
 </form>
+
+<script>
+    {
+        // 게시글 생성 버튼 변수화
+        const articleCreateBtn = document.querySelector("#article-create-btn");
+        // 버튼 클릭 이벤트 감지
+        articleCreateBtn.addEventListener("click", function() {
+            // 새 게시글 객체 생성
+            const article = {
+                // 새 게시글의 제목
+                title: document.querySelector("#new-article-title").value,
+                // 새 게시글의 내용
+                content: document.querySelector("#new-article-content").value
+            };
+            // 게시글 객체 출력
+            console.log(article);
+            // fetch() - 비동기 통신으로 REST API 호출
+            fetch("/api/articles", {
+                method: "POST",                 // POST 요청 -> @PostMapping("/api/articles")
+                headers: {                      // 전송 본문의 데이터 타입(JSON) 정보
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(article)   // article 객체를 JSON 문자열로 변환해 전송
+            }).then(response => {
+                // 실패 시 (400 등) 메시지 출력 후 종료
+                if (!response.ok) {
+                    alert("게시글 등록 실패..!");
+                    return;
+                }
+                // 성공 시 응답 본문(JSON)을 객체로 변환 -> ResponseEntity.body(created)
+                return response.json();
+            }).then(created => {
+                // 생성된 게시글이 있으면 상세 페이지로 이동
+                if (created) {
+                    alert("게시글이 등록됐습니다.");
+                    window.location.href = "/articles/" + created.id;
+                }
+            });
+        });
+    }
+</script>
 
 {{>layouts/footer}}
