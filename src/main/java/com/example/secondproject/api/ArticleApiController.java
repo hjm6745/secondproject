@@ -1,8 +1,6 @@
 package com.example.secondproject.api;
 
-import com.example.secondproject.dto.ArticleForm;
-import com.example.secondproject.entity.Article;
-import com.example.secondproject.repository.ArticleRepository;
+import com.example.secondproject.dto.ArticleDto;
 import com.example.secondproject.service.ArticleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -22,18 +19,18 @@ public class ArticleApiController {
 
     // GET
     @GetMapping("/api/articles")
-    public List<Article> index() {
+    public List<ArticleDto> index() {
         return articleService.index();
     }
     @GetMapping("/api/articles/{id}")
-    public Article show(@PathVariable Long id){
+    public ArticleDto show(@PathVariable Long id){
         return articleService.show(id);
     }
 
     // POST
     @PostMapping("/api/articles")
-    public ResponseEntity<Article> create(@RequestBody ArticleForm dto) {
-        Article created = articleService.create(dto);
+    public ResponseEntity<ArticleDto> create(@RequestBody ArticleDto dto) {
+        ArticleDto created = articleService.create(dto);
         return (created != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(created) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -41,8 +38,8 @@ public class ArticleApiController {
 
     // PATCH
     @PatchMapping("/api/articles/{id}")
-    public ResponseEntity<Article> update(@PathVariable Long id, @RequestBody ArticleForm dto) {        // ResponseEntity 는 상태코드를 같이 반환해준다. 위 코드들도 바꿔주는 것이 원칙.
-        Article updated = articleService.update(id, dto);
+    public ResponseEntity<ArticleDto> update(@PathVariable Long id, @RequestBody ArticleDto dto) {        // ResponseEntity 는 상태코드를 같이 반환해준다. 위 코드들도 바꿔주는 것이 원칙.
+        ArticleDto updated = articleService.update(id, dto);
         return (updated != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(updated) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -50,16 +47,16 @@ public class ArticleApiController {
 
     // DELETE
     @DeleteMapping("/api/articles/{id}")
-    public ResponseEntity<Article> delete(@PathVariable Long id) {
-        Article deleted = articleService.delete(id);
+    public ResponseEntity<ArticleDto> delete(@PathVariable Long id) {
+        ArticleDto deleted = articleService.delete(id);
         return (deleted != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(deleted) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PostMapping("/api/transaction-test")
-    public ResponseEntity<List<Article>> transactionTest(@RequestBody List<ArticleForm> dtos) {
-        List<Article> createdList = articleService.createArticles(dtos);
+    public ResponseEntity<List<ArticleDto>> transactionTest(@RequestBody List<ArticleDto> dtos) {
+        List<ArticleDto> createdList = articleService.createArticles(dtos);
         return (createdList != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(createdList) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

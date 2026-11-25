@@ -1,19 +1,53 @@
 {{>layouts/header}}
 
 {{#article}}
-<form class="container" action="/articles/update" method="post">
-    <input name="id" type="hidden" value="{{id}}">
+<form class="container">
+    <input id="edit-article-id" type="hidden" value="{{id}}">
     <div class="mb-3">
         <label class="form-label">제목</label>
-        <input type="text" class="form-control" name="title" value="{{title}}">
+        <input type="text" class="form-control" id="edit-article-title" value="{{title}}">
     </div>
     <div class="mb-3">
         <label class="form-label">내용</label>
-        <textarea class="form-control" rows="3" name="content">{{content}}</textarea>
+        <textarea class="form-control" rows="3" id="edit-article-content">{{content}}</textarea>
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-primary" id="article-update-btn">Submit</button>
     <a href="/articles/{{id}}">Back</a>
 </form>
 {{/article}}
+
+<script>
+    {
+        // 수정 버튼 변수화
+        const articleUpdateBtn = document.querySelector("#article-update-btn");
+        // 버튼 클릭 이벤트 감지
+        articleUpdateBtn.addEventListener("click", function(){
+            // 수정 게시글 객체 생성
+            const article = {
+                id: document.querySelector("#edit-article-id").value,
+                title: document.querySelector("#edit-article-title").value,
+                content: document.querySelector("#edit-article-content").value
+            };
+            console.log(article);   // 콘솔에 로그를 찍는 이유는? 안좋다고 들었는데..
+            // 수정 REST API 호출 -> @PatchMapping("/api/articles/{id}")
+            fetch("/api/articles/" + article.id, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(article) // 왜 article이야? stringify가 뭔데 -> JS객체(article)을 JSON 문자열로 바꿔는 작업.
+            }).then((response) => {
+                // 실패 시 메시지 출력 후 종료
+                if (!response.ok) {
+                    alert("게시글 수정 실패..!")
+                    return;
+                }
+                // 성공 시 상세 페이지로 이동
+                alert("게시글이 수정됐습니다.");
+                window.location.href = "/articles/" + article.id;
+            })
+        })
+    }
+</script>
 
 {{>layouts/footer}}

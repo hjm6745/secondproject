@@ -21,8 +21,31 @@
 </table>
 
 <a href="/articles/{{article.id}}/edit" class="btn btn-primary">Edit</a>
-<a href="/articles/{{article.id}}/delete" class="btn btn-danger">Delete</a>
+<!-- a 링크(GET) -> button + fetch(DELETE)로 변경 -->
+<button type="button" class="btn btn-danger" id="article-delete-btn" data-article-id="{{article.id}}">DELETE</button>   <!-- data-article-id가 뭐야? -->
 <a href="/articles">Go to Article List</a>
-
+<script>
+    {
+        // 삭제 버튼 변수화
+        const articleDeleteBtn = document.querySelector("#article-delete-btn");
+        // 버튼 클릭 이벤트 감지
+        articleDeleteBtn.addEventListener("click", function() {
+            // 삭제할 게시글 id 가져오기
+            const articleId = articleDeleteBtn.getAttribute("data-article-id");
+            // 삭제 REST API 호출 -> @DeleteMapping("/api/articles/{id}")
+            fetch("/api/articles/" + articleId, {
+                method: "DELETE",
+            }).then((response) => {
+                if(!response.ok) {
+                    alert("게시글 삭제 실패..!");
+                    return;
+                }
+                // 성공 시 메시지 출력 후 목록으로 이동 (기존 flash 메시지 대신)
+                alert("삭제됐습니다!");
+                window.location.href = "/articles";
+            });
+        });
+    }
+</script>
 {{>comments/_comments}}
 {{>layouts/footer}}

@@ -1,5 +1,4 @@
 package com.example.secondproject.service;
-import com.example.secondproject.dto.ArticleForm;
 import com.example.secondproject.entity.Article;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -56,7 +55,7 @@ class ArticleServiceTest {
         // 1. 예상 데이터
         String title = "라라라라";
         String content = "4444";
-        ArticleForm dto = new ArticleForm(null, title, content);
+        com.example.secondproject.dto.ArticleDto dto = new com.example.secondproject.dto.ArticleDto(null, title, content);
         Article expected = new Article(4L, title, content);
         // 2. 실제 데이터
         Article article = articleService.create(dto);
@@ -70,7 +69,7 @@ class ArticleServiceTest {
         Long id = 4L;
         String title = "라라라라";
         String content = "4444";
-        ArticleForm dto = new ArticleForm(id, title, content);
+        com.example.secondproject.dto.ArticleDto dto = new com.example.secondproject.dto.ArticleDto(id, title, content);
         Article expected = null;
         // 2. 실제 데이터
         Article article = articleService.create(dto);
