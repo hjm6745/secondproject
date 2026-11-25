@@ -1,5 +1,5 @@
 package com.example.secondproject.service;
-import com.example.secondproject.entity.Article;
+import com.example.secondproject.dto.ArticleDto;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +18,12 @@ class ArticleServiceTest {
     @Test
     void index() {
         // 1. 예상 데이터
-        Article a = new Article(1L, "가가가가", "1111");
-        Article b = new Article(2L, "나나나나", "2222");
-        Article c = new Article(3L, "다다다다", "3333");
-        List<Article> expected = new ArrayList<Article>(Arrays.asList(a, b, c));
+        ArticleDto a = new ArticleDto(1L, "가가가가", "1111");
+        ArticleDto b = new ArticleDto(2L, "나나나나", "2222");
+        ArticleDto c = new ArticleDto(3L, "다다다다", "3333");
+        List<ArticleDto> expected = new ArrayList<ArticleDto>(Arrays.asList(a, b, c));
         // 2. 실제 데이터
-        List<Article> articles = articleService.index();
+        List<ArticleDto> articles = articleService.index();
         // 3. 비교 및 검증
         assertEquals(expected.toString(), articles.toString());
     }
@@ -32,9 +32,9 @@ class ArticleServiceTest {
     void show_성공() {
         // 1. 예상 데이터
         Long id = 1L;
-        Article expected = new Article(id, "가가가가", "1111");
+        ArticleDto expected = new ArticleDto(id, "가가가가", "1111");
         // 2. 실제 데이터
-        Article article = articleService.show(id);
+        ArticleDto article = articleService.show(id);
         // 3. 비교 및 검증
         assertEquals(expected.toString(), article.toString());
     }
@@ -42,9 +42,9 @@ class ArticleServiceTest {
     void show_실패() {
         // 1. 예상 데이터
         Long id = -1L;
-        Article expected = null;
+        ArticleDto expected = null;
         // 2. 실제 데이터
-        Article article = articleService.show(id);
+        ArticleDto article = articleService.show(id);
         // 3. 비교 및 검증
         assertEquals(expected, article);
     }
@@ -55,10 +55,10 @@ class ArticleServiceTest {
         // 1. 예상 데이터
         String title = "라라라라";
         String content = "4444";
-        com.example.secondproject.dto.ArticleDto dto = new com.example.secondproject.dto.ArticleDto(null, title, content);
-        Article expected = new Article(4L, title, content);
+        ArticleDto dto = new ArticleDto(null, title, content);
+        ArticleDto expected = new ArticleDto(4L, title, content);
         // 2. 실제 데이터
-        Article article = articleService.create(dto);
+        ArticleDto article = articleService.create(dto);
         // 3. 비교 및 검증
         assertEquals(expected.toString(), article.toString());
     }
@@ -69,10 +69,10 @@ class ArticleServiceTest {
         Long id = 4L;
         String title = "라라라라";
         String content = "4444";
-        com.example.secondproject.dto.ArticleDto dto = new com.example.secondproject.dto.ArticleDto(id, title, content);
-        Article expected = null;
+        ArticleDto dto = new ArticleDto(id, title, content);
+        ArticleDto expected = null;
         // 2. 실제 데이터
-        Article article = articleService.create(dto);
+        ArticleDto article = articleService.create(dto);
         // 3. 비교 및 검증
         assertEquals(expected, article);
     }

@@ -77,7 +77,7 @@ public class ArticleService {
     }
 
     @Transactional      // (궁금점) 트랜잭션 사용처가 이거밖에 없나?
-    public List<ArticleDto> createArticles(Article> dtos) {
+    public List<ArticleDto> createArticles(List<ArticleDto> dtos) {
         // 1. dto 묶음을 엔티티 묶음으로 변환하기
         List<Article> articleList = dtos.stream()
                 .map(dto -> dto.toEntity())
@@ -90,7 +90,7 @@ public class ArticleService {
                 .orElseThrow(() -> new IllegalArgumentException("결제 실패!"));
         // 4. 결과 값 반환하기
         return articleList.stream()
-                .map(article -> Article.createArticleDto(article))
+                .map(article -> ArticleDto.createArticleDto(article))
                 .collect(Collectors.toList());
     }
 }
