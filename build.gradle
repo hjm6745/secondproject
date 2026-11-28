@@ -18,6 +18,8 @@ repositories {
 }
 
 dependencies {
+	// PostgreSQL 드라이버 추가!
+	runtimeOnly 'org.postgresql:postgresql'
 	compileOnly 'org.projectlombok:lombok'	// 롬복 설치하기
 	annotationProcessor 'org.projectlombok:lombok' // 롬복 설치하기
 	implementation 'org.springframework.boot:spring-boot-h2console'
